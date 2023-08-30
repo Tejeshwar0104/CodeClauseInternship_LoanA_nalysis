@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+data = pd.read_csv("C:/Users/WELCOME/OneDrive/Documents/INTERNSHIP/loan_data_set.csv")
+data
+
+dataa = data.dropna()
+
+dataa.isnull().sum()
+
+dataa
+
+X = dataa.drop(['Loan_Status'],axis = 1)
+Y = dataa['Loan_Status']
+
+X = pd.get_dummies(X,columns = ['Loan_ID','Gender','Married','Dependents','Education','Self_Employed','Property_Area'])
+
+X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size = 0.25,random_state = 40)
+
+model = RandomForestClassifier(n_estimators = 50,random_state = 40)
+
+model.fit(X_train,Y_train)
+
+pred = model.predict(X_test)
+
+acc = accuracy_score(pred,Y_test)
+acc
+
+cls_rprt = classification_report(Y_test,pred)
+print(cls_rprt)
